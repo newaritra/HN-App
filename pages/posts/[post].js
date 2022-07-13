@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import styled from "styled-components";
 import Link from "next/link";
 import Comments from "../../components/Comments";
+import Spinner from "../../components/Spinner";
 
 const PointDiv = styled.div`
   display: flex;
@@ -98,9 +99,10 @@ const Post = () => {
     </Container>
   ) : (
     // </Container>
-    <h1 style={{ textAlign: "center", verticalAlign: "middle" }}>
-      Loading...
-    </h1>
+    // <h1 style={{ textAlign: "center", verticalAlign: "middle" }}>
+    //   Loading...
+    // </h1>
+    <Spinner />
   );
 };
 

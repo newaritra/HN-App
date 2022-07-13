@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import styled from "styled-components";
+import Spinner from "./Spinner";
 
 const Container = styled.div`
   margin: 5.5rem 0 0 50%;
@@ -27,7 +28,7 @@ const QueryInput = styled.input`
   }
   @media (max-width: 600px) {
     width: 95%;
-    align-self:center ;
+    align-self: center;
   }
 `;
 
@@ -51,7 +52,7 @@ const CardHeading = styled.h3`
 const CardDescription = styled.p`
   margin-top: 1rem;
   margin-left: 1rem;
-  color: lightgray;
+  color: gray;
 `;
 
 const StyledLabel = styled.label`
@@ -68,7 +69,10 @@ const StyledSelect = styled.select`
   height: 3rem;
   border: 2px solid gray;
   border-radius: 1rem;
-  margin-top: 1rem;
+  margin-top: 0.7rem;
+  @media (max-width: 600px) {
+    margin-left: 1.5rem;
+  }
 `;
 
 const tags = [
@@ -138,61 +142,71 @@ const QueryApi = () => {
   }, [pageNumber]);
 
   return (
-    <Container>
-      <StyledLabel>Search</StyledLabel>
-      <QueryInput
-        value={inputText}
-        placeholder="Search hacker news"
-        onChange={(e) => {
-          handleInput(e);
-        }}
-      />
-      <p style={{ alignSelf: "center" }}>Available Tags: {tags.join(",")}</p>
-      <QueryInput
-        value={tag}
-        onChange={(e) => setTag(e.target.value)}
-        placeholder="Search by tag"
-      />
-      <span style={{ marginTop: "1rem", fontSize: "1.1rem" }}>Sort By</span>
-      <StyledSelect
-        value={sortByTime ? "Time" : "Relevance"}
-        onChange={(e) => {
-          console.log(e.target.value);
-          setSortByTime(e.target.value == "Time" ? true : false);
-          console.log(sortByTime);
-        }}
-      >
-        <option>Relevance</option>
-        <option>Time</option>
-      </StyledSelect>
-      {posts.length
-        ? posts
+    <>
+      {!posts.length && <Spinner />}
+      <Container>
+        <StyledLabel>Search</StyledLabel>
+        <QueryInput
+          value={inputText}
+          placeholder="Search hacker news"
+          onChange={(e) => {
+            handleInput(e);
+          }}
+        />
+        <p style={{ alignSelf: "center" }}>Available Tags: {tags.join(",")}</p>
+        <QueryInput
+          value={tag}
+          onChange={(e) => setTag(e.target.value)}
+          placeholder="Search by tag"
+        />
+        <span
+          style={{
+            marginTop: "1rem",
+            fontSize: "1.1rem",
+            marginLeft: "1.7rem",
+          }}
+        >
+          Sort By
+        </span>
+        <StyledSelect
+          value={sortByTime ? "Time" : "Relevance"}
+          onChange={(e) => {
+            console.log(e.target.value);
+            setSortByTime(e.target.value == "Time" ? true : false);
+            console.log(sortByTime);
+          }}
+        >
+          <option>Relevance</option>
+          <option>Time</option>
+        </StyledSelect>
+        {posts.length &&
+          posts
             ?.filter((item) => item.title)
             .map((item, index) => (
               <Link href={`/posts/${item.objectID}` || ""}>
                 <CardContainer key={index}>
                   <CardHeading>{item.title}</CardHeading>
                   <CardDescription>
-                    Author: {item?.author} Points: {item?.points}
+                    Author: {item?.author}    Points: {item?.points}
                   </CardDescription>
                 </CardContainer>
               </Link>
-            ))
-        : "Loading..."}
-      <h2
-        style={{
-          textDecoration: "underline",
-          alignSelf: "center",
-          cursor: "pointer",
-        }}
-        onClick={() => {
-          setPageNumber((page) => page + 1);
-          //   window.scrollBy(window.innerHeight);
-        }}
-      >
-        Show more
-      </h2>
-    </Container>
+            ))}
+        <h2
+          style={{
+            textDecoration: "underline",
+            alignSelf: "center",
+            cursor: "pointer",
+          }}
+          onClick={() => {
+            setPageNumber((page) => page + 1);
+            //   window.scrollBy(window.innerHeight);
+          }}
+        >
+          Show more
+        </h2>
+      </Container>
+    </>
   );
 };
 

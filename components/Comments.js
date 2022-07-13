@@ -2,7 +2,7 @@ import React from "react";
 import styled, { css } from "styled-components";
 
 const CommentContainer = styled.div`
-  margin-left: ${({ level }) => level + "rem"};
+  margin-left: ${({ level }) => level * 1.5 + "rem"};
   border: 2px solid lightgray;
   padding: 0.5rem;
   max-width: 60vw;
@@ -12,7 +12,7 @@ const CommentContainer = styled.div`
   /* overflow: hidden; */
   & > *,
   a {
-    font-size:1.2rem ;
+    font-size: 1.2rem;
     white-space: pre-wrap;
     word-wrap: break-word;
   }
@@ -47,7 +47,6 @@ const Author = styled.h1`
 `;
 
 const Comments = ({ item, level }) => {
-    
   return (
     <Container level={level}>
       <Author level={level}>{item.author}</Author>: replied-to: {item.parent_id}{" "}
